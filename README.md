@@ -5,3 +5,5 @@ Membuat program ATM menggunakan Dart
 default PIN :
 000000
 222222
+
+masih menggunakan not null
