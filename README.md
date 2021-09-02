@@ -1,3 +1,7 @@
 # Tugas Dart Fundamental GITS Id
 
-membuat program ATM menggunakan Dart
+Membuat program ATM menggunakan Dart
+
+default PIN :
+000000
+222222
