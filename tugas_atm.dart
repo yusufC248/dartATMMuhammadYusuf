@@ -1,7 +1,9 @@
 import 'dart:io';
 
 List<String> pinAtm = ['000000', '222222'];
-double saldo = 500000;
+List<double> JmlSaldo = [500000, 600000];
+
+String akun = "";
 void main() {
   print("ATM Jaya Jaya Jaya");
   login();
@@ -11,13 +13,15 @@ void main() {
 void login() {
   stdout.write('Masukan pin : ');
   String pin = stdin.readLineSync()!.trim();
-  if (pin == pinAtm[0]) {
-    print("berhasil");
-  } else if (pin == pinAtm[1]) {
-    print("berhasil");
-  } else {
-    print("[[Pin Salah, Ulangi!]]");
-    login();
+  for (int i = 0; i < pinAtm.length; i++) {
+    if ((pin == pinAtm[0]) || (pin == pinAtm[1])) {
+      akun = pin;
+      print("berhasil");
+      break;
+    } else {
+      print("Gagal");
+      break;
+    }
   }
 }
 
@@ -27,66 +31,107 @@ void menu() {
   print("2. Transfer");
   print("3. Tarik Tunai");
   print("4. Setor  Tunai");
-  print("5. Exit");
+  print("5. Ganti Akun");
+  print("ketik 0 untuk selesai");
 
   stdout.write("\nMasukan Pilihan (1-5) : ");
   var select = stdin.readLineSync();
   switch (select) {
     case '1':
-      print("Jumlah Saldo Anda : $saldo");
+      cekSaldo(akun);
       break;
     case '2':
-      transfer();
+      transfer(akun);
       break;
     case '3':
-      tarikSaldo();
+      tarikSaldo(akun);
       break;
     case '4':
-      tambahSaldo();
+      tambahSaldo(akun);
       break;
     case '5':
-      print("Terima Kasih");
+      print("Terima Kasih\n\n");
+      main();
       break;
     default:
-      print("[[pilihan error, ulangi]]");
-      menu();
+      break;
   }
 }
 
-void tarikSaldo() {
-  stdout.write("Masukan Jumlah Penarikan : Rp.");
-  double tarik = double.parse(stdin.readLineSync()!);
-
-  if (tarik <= saldo) {
-    saldo = saldo - tarik;
-    print(
-        "\n\nTunggu Sampai Uang Keluar, Jangan Lupa Mengambil Kartu ATM Anda Kembali!");
-    print("Sisa Saldo Anda : Rp.$saldo \n");
+void cekSaldo(String akun) {
+  if (akun == pinAtm[0]) {
+    print("Saldo Anda : Rp." + JmlSaldo[0].toString() + "\n");
     menu();
   } else {
-    print("Saldo Anda tidak cukup, sisa saldo Anda Rp.$saldo. Ulangi! \n");
+    print("Saldo Anda : Rp." + JmlSaldo[1].toString() + "\n");
     menu();
   }
 }
 
-void tambahSaldo() {
-  stdout.write("Masukan Nominal Setor Tunai : Rp.");
-  double setor = double.parse(stdin.readLineSync()!);
-  saldo = saldo + setor;
-  print("\n\nHarap Masukan Uang Anda ke Mesin AtM!");
-  print("Sisa Saldo Anda : Rp.$saldo \n");
-  menu();
+void tarikSaldo(String akun) {
+  stdout.write("Masukan Jumlah Penarikan : Rp.");
+  double tarik = double.parse(stdin.readLineSync()!);
+  if (akun == pinAtm[0]) {
+    if (tarik <= JmlSaldo[0]) {
+      JmlSaldo[0] = JmlSaldo[0] - tarik;
+      print(
+          "\n\nTunggu Sampai Uang Keluar, Jangan Lupa Mengambil Kartu ATM Anda Kembali!");
+      print("Sisa Saldo Anda : Rp." + JmlSaldo[0].toString());
+      menu();
+    } else {
+      print("Saldo Anda tidak cukup, sisa saldo Anda Rp." +
+          JmlSaldo[0].toString() +
+          " Ulangi! \n");
+      menu();
+    }
+  } else {
+    if (tarik <= JmlSaldo[1]) {
+      JmlSaldo[1] = JmlSaldo[1] - tarik;
+      print(
+          "\n\nTunggu Sampai Uang Keluar, Jangan Lupa Mengambil Kartu ATM Anda Kembali!");
+      print("Sisa Saldo Anda : Rp." + JmlSaldo[1].toString() + "\n");
+      menu();
+    } else {
+      print("Saldo Anda tidak cukup, sisa saldo Anda Rp." +
+          JmlSaldo[1].toString() +
+          " Ulangi! \n");
+      menu();
+    }
+  }
 }
 
-void transfer() {
-  stdout.write("Masukan Nomor Rekening Tujuan : ");
-  var noRek = stdin.readLineSync();
-  print("$noRek a/n Muhammad Yusuf, Bank BRI\n");
-  stdout.write("Masukan Jumlah Nominal Transfer : Rp.");
-  double jmlTransfer = double.parse(stdin.readLineSync()!);
+void tambahSaldo(String akun) {
+  stdout.write("Masukan Nominal Setor Tunai : Rp.");
+  double setor = double.parse(stdin.readLineSync()!);
+  if (akun == pinAtm[0]) {
+    JmlSaldo[0] = JmlSaldo[0] + setor;
+    print("\n\nHarap Masukan Uang Anda ke Mesin AtM!");
+    print("Sisa Saldo Anda : Rp." + JmlSaldo[0].toString() + " \n");
+    menu();
+  } else {
+    JmlSaldo[1] = JmlSaldo[1] + setor;
+    print("\n\nHarap Masukan Uang Anda ke Mesin AtM!");
+    print("Sisa Saldo Anda : Rp." + JmlSaldo[1].toString() + " \n");
+    menu();
+  }
+}
 
-  saldo = saldo - jmlTransfer;
-  print("\nTransfer Berhasil, Ambil Struk\n");
-  print("Sisa Saldo Anda : Rp.$saldo \n");
-  menu();
+void transfer(String akun) {
+  if (akun == pinAtm[0]) {
+    print("Anda hanya bisa transfer ke Akun : " + pinAtm[1]);
+    stdout.write("Masukan Jumlah Nominal Transfer : Rp.");
+    double jmlTransfer = double.parse(stdin.readLineSync()!);
+    JmlSaldo[0] = JmlSaldo[0] - jmlTransfer;
+    print("\nTransfer Berhasil, Ambil Struk\n");
+    print("Sisa Saldo Anda : Rp." + JmlSaldo[0].toString() + "\n");
+    menu();
+  } else {
+    print("Anda hanya bisa transfer ke Akun : " + pinAtm[0]);
+    stdout.write("Masukan Jumlah Nominal Transfer : Rp.");
+    double jmlTransfer = double.parse(stdin.readLineSync()!);
+    JmlSaldo[1] = JmlSaldo[1] - jmlTransfer;
+    print("\nTransfer Berhasil, Ambil Struk\n");
+    print("Sisa Saldo Anda : Rp." + JmlSaldo[1].toString() + "\n");
+    menu();
+  }
 }
