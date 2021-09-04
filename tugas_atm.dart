@@ -4,10 +4,10 @@ List<String> pinAtm = ['000000', '222222'];
 List<double> JmlSaldo = [500000, 600000];
 
 String akun = "";
+double Saldo = 0;
 void main() {
   print("ATM Jaya Jaya Jaya");
   login();
-  menu();
 }
 
 void login() {
@@ -17,6 +17,7 @@ void login() {
     if ((pin == pinAtm[0]) || (pin == pinAtm[1])) {
       akun = pin;
       print("berhasil");
+        menu();
       break;
     } else {
       print("Gagal");
@@ -60,9 +61,11 @@ void menu() {
 
 void cekSaldo(String akun) {
   if (akun == pinAtm[0]) {
+    Saldo = JmlSaldo[0];
     print("Saldo Anda : Rp." + JmlSaldo[0].toString() + "\n");
     menu();
   } else {
+    Saldo = JmlSaldo[1];
     print("Saldo Anda : Rp." + JmlSaldo[1].toString() + "\n");
     menu();
   }
@@ -73,6 +76,7 @@ void tarikSaldo(String akun) {
   double tarik = double.parse(stdin.readLineSync()!);
   if (akun == pinAtm[0]) {
     if (tarik <= JmlSaldo[0]) {
+      Saldo = JmlSaldo[0];
       JmlSaldo[0] = JmlSaldo[0] - tarik;
       print(
           "\n\nTunggu Sampai Uang Keluar, Jangan Lupa Mengambil Kartu ATM Anda Kembali!");
@@ -86,6 +90,7 @@ void tarikSaldo(String akun) {
     }
   } else {
     if (tarik <= JmlSaldo[1]) {
+      Saldo = JmlSaldo[1];
       JmlSaldo[1] = JmlSaldo[1] - tarik;
       print(
           "\n\nTunggu Sampai Uang Keluar, Jangan Lupa Mengambil Kartu ATM Anda Kembali!");
@@ -104,11 +109,13 @@ void tambahSaldo(String akun) {
   stdout.write("Masukan Nominal Setor Tunai : Rp.");
   double setor = double.parse(stdin.readLineSync()!);
   if (akun == pinAtm[0]) {
+    Saldo = JmlSaldo[0];
     JmlSaldo[0] = JmlSaldo[0] + setor;
     print("\n\nHarap Masukan Uang Anda ke Mesin AtM!");
     print("Sisa Saldo Anda : Rp." + JmlSaldo[0].toString() + " \n");
     menu();
   } else {
+    Saldo = JmlSaldo[1];
     JmlSaldo[1] = JmlSaldo[1] + setor;
     print("\n\nHarap Masukan Uang Anda ke Mesin AtM!");
     print("Sisa Saldo Anda : Rp." + JmlSaldo[1].toString() + " \n");
@@ -124,6 +131,7 @@ void transfer(String akun) {
     JmlSaldo[0] = JmlSaldo[0] - jmlTransfer;
     print("\nTransfer Berhasil, Ambil Struk\n");
     print("Sisa Saldo Anda : Rp." + JmlSaldo[0].toString() + "\n");
+    JmlSaldo[1] = JmlSaldo[1] + jmlTransfer;
     menu();
   } else {
     print("Anda hanya bisa transfer ke Akun : " + pinAtm[0]);
@@ -132,6 +140,7 @@ void transfer(String akun) {
     JmlSaldo[1] = JmlSaldo[1] - jmlTransfer;
     print("\nTransfer Berhasil, Ambil Struk\n");
     print("Sisa Saldo Anda : Rp." + JmlSaldo[1].toString() + "\n");
+    JmlSaldo[0] = JmlSaldo[0] + jmlTransfer;
     menu();
   }
 }
