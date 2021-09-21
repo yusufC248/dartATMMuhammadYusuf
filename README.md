@@ -1,6 +1,6 @@
 # Tugas Dart Fundamental GITS Id
 
-#Menu Utama
+# Menu Utama
 1. Aplikasi ATM
 2. Aplikasi Factorial
 3. Aplikasi Perulangan
